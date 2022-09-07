@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <AssemblyName>Orleans.EventSourcing.Snapshot</AssemblyName>
     <RootNamespace>Orleans.EventSourcing.Snapshot</RootNamespace>
-    <Version>1.0.4</Version>
-    <Authors>Jeffrey Zhang</Authors>
+    <Version>1.0.5</Version>
+    <Authors>Jeffrey Zhang,Bourne Shi</Authors>
     <Product />
     <Description>Snapshot storage provider for orleans event sourcing</Description>
     <PackageProjectUrl>https://github.com/OrleansContrib/Orleans.EventSourcing.Snapshot</PackageProjectUrl>
@@ -13,7 +13,7 @@
 
   <ItemGroup>
     <PackageReference Include="DeepCloner" Version="0.10.2" />
-    <PackageReference Include="Microsoft.Orleans.EventSourcing" Version="3.4.0" />
+    <PackageReference Include="Microsoft.Orleans.EventSourcing" Version="3.6.5" />
   </ItemGroup>
 
 </Project>
