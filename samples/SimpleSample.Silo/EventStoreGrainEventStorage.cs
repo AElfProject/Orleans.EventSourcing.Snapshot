@@ -24,6 +24,7 @@ namespace SimpleSample.Silo
         };
 
         private IEventStoreConnection _eventStoreConnection;
+        //private IKvConnection _eventStoreConnection;
         private Func<string, Type> _stringToType;
         private Func<Type, string> _typeToString;
 

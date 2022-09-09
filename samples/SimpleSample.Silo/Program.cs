@@ -59,6 +59,7 @@ namespace SimpleSample.Silo
 
                         services.AddSingleton(eventStoreConnection);
                         services.AddSingleton<IGrainEventStorage, EventStoreGrainEventStorage>();
+                        //services.AddSingleton<IKvConnection, KvConnectionListHelper>();
                     };
                 });
 
