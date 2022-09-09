@@ -2,14 +2,21 @@
 using SimpleSample.GrainInterfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Orleans.EventSourcing.Snapshot;
 
 namespace SimpleSample.Grains
 {
-    public class PersonGrain : JournaledGrain<PersonState>, IPersonGrain
+    public class PersonGrain : JournaledSnapshotGrain<PersonState>, IPersonGrain
     {
         public Task Say(string content)
         {
-            RaiseEvent(new PersonSaidEvent { Said = content });
+            bool isNeedStorageSnapshot = false;
+            if (content.Contains("5"))
+            {
+                isNeedStorageSnapshot = true;
+            }
+            
+            RaiseEvent(new PersonSaidEvent { Said = content },isNeedStorageSnapshot);
 
             return Task.CompletedTask;
         }
@@ -21,7 +28,7 @@ namespace SimpleSample.Grains
 
         public Task UpdateNickName(string newNickName)
         {
-            RaiseEvent(new PersonNickNameUpdatedEvent { NewNickName = newNickName });
+            RaiseEvent(new PersonNickNameUpdatedEvent { NewNickName = newNickName },true);
 
             return Task.CompletedTask;
         }

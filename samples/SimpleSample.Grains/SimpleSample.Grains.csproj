@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Orleans.EventSourcing.Snapshot\Orleans.EventSourcing.Snapshot.csproj" />
     <ProjectReference Include="..\SimpleSample.GrainInterfaces\SimpleSample.GrainInterfaces.csproj" />
   </ItemGroup>
 

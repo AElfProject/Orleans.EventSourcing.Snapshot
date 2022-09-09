@@ -198,7 +198,7 @@ namespace Orleans.EventSourcing.Snapshot
             {
                 try
                 {
-                    if (_snapshotStrategy(GetSnapshotStrategyInfo()))
+                    if (needStorageSnapshot)
                     {
                         _snapshotState.StateAndMetaData.SnapshotVersion = _confirmedVersionInternal;
                         _snapshotState.StateAndMetaData.SnapshotUpdatedTime = DateTime.Now;
@@ -439,6 +439,7 @@ namespace Orleans.EventSourcing.Snapshot
                 SnapshotUpdatedTime = _snapshotState.StateAndMetaData.SnapshotUpdatedTime
             };
         }
+        
 
 #if DEBUG
         private bool operation_in_progress;
