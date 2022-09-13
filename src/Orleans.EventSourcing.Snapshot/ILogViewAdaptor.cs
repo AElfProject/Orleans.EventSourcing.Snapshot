@@ -38,6 +38,8 @@ namespace Orleans.EventSourcing.Snapshot;
     /// <typeparam name="TView">The type of the view (state of the grain).</typeparam>
     /// <typeparam name="TLogEntry">The type of log entries.</typeparam>
     public interface ILogViewRead<TView, TLogEntry>
+        where TView : new()
+        // where TLogEntry : class
     {
         /// <summary>
         /// Local, tentative view of the log (reflecting both confirmed and unconfirmed entries)
@@ -76,8 +78,8 @@ namespace Orleans.EventSourcing.Snapshot;
     /// <typeparam name="TLogEntry">The type of log entries.</typeparam>
     public interface ILogViewUpdate<TLogEntry>
     {
-        void SetStorageSnapshotFlag(bool isNeedStorageSnapshot);
-        
+        void NeedSnapshot();
+
         /// <summary>
         /// Submit a single log entry to be appended to the global log,
         /// either at the current or at any later position.

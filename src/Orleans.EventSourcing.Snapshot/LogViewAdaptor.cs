@@ -198,11 +198,12 @@ namespace Orleans.EventSourcing.Snapshot
             {
                 try
                 {
-                    if (needStorageSnapshot)
+                    if (_needSnapshot)
                     {
                         _snapshotState.StateAndMetaData.SnapshotVersion = _confirmedVersionInternal;
                         _snapshotState.StateAndMetaData.SnapshotUpdatedTime = DateTime.Now;
                         _snapshotState.StateAndMetaData.Snapshot = _confirmedViewInternal.DeepClone();
+                        _needSnapshot = false;
                     }
 
                     await _grainStorage.WriteStateAsync(_grainTypeName, Services.GrainReference, _snapshotState);

@@ -278,11 +278,11 @@ namespace Orleans.EventSourcing.Snapshot;
             }
         }
 
-        protected bool needStorageSnapshot;
+        protected bool _needSnapshot;
 
-        public void SetStorageSnapshotFlag(bool isNeedStorageSnapshot)
+        public void NeedSnapshot()
         {
-            needStorageSnapshot = isNeedStorageSnapshot;
+            _needSnapshot = true;
         }
 
         /// <inheritdoc />

@@ -46,8 +46,7 @@ namespace Orleans.EventSourcing.Snapshot
 
     [Serializable]
     public class SnapshotStateWithMetaData<TState, TEntry>
-        where TState : class, new()
-        where TEntry : class
+        where TState : new()
     {
         public List<TEntry> Log { get; set; }
 
