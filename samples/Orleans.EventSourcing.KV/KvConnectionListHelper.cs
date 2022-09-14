@@ -3,11 +3,12 @@ using EventStore.ClientAPI.SystemData;
 using Newtonsoft.Json;
 using StackExchange.Redis;
 
-namespace SimpleSample.KV;
+namespace Orleans.EventSourcing.KV;
 
 public class KvConnectionListHelper:IKvConnection
 {
     //private  string KvConnectionSTR = APIConfHelper.AppSettings["KvConnectionSTR"].ToString();
+    private string KvConnectionSTR = "localhost:6379";
     private static object KvLock = new object();
     private static ConnectionMultiplexer _connection;
  
@@ -22,7 +23,6 @@ public class KvConnectionListHelper:IKvConnection
                 {
                     if (_connection == null || _connection.IsConnected == false)
                     {
-                        var KvConnectionSTR = APIConfHelper.AppSettings["KvConnectionSTR"].ToString();
                         _connection = ConnectionMultiplexer.Connect(KvConnectionSTR);
                     }
                 }
@@ -45,7 +45,7 @@ public class KvConnectionListHelper:IKvConnection
     public async Task<List<EventData>> ReadStreamEventsForwardAsync(string stream, long start, int count)
     {
 
-        var result=  GetRedisDatabase().ListRange(stream, start, count+start-1);
+        var result= await GetRedisDatabase().ListRangeAsync(stream, start, count+start-1);
         //var result2=  GetRedisDatabase().ListRange(stream, start, -1);
         List<EventData> list = new List<EventData>();
         foreach (var redisValue in result)
@@ -60,36 +60,63 @@ public class KvConnectionListHelper:IKvConnection
     
     public async Task<bool> AppendToStreamAsync(string stream, long expectedVersion, IEnumerable<EventData> events)
     {
-        
-        foreach (var eventData in events)
-        {
-            await GetRedisDatabase().ListRightPushAsync(stream,JsonConvert.SerializeObject(eventData));
-        }
+        var count= await GetRedisDatabase().ListRightPushAsync(stream,
+            events.Select(e => new RedisValue(JsonConvert.SerializeObject(e))).ToArray());
 
-        return true;
+        return count > 0 ;
     }
 
-    public async Task<EventData> ReadStreamEventsBackwardAsync(string stream, long start, int count)
+    public async Task<List<EventData>> ReadStreamEventsBackwardAsync(string stream, long start, int count)
     {
         var result=  await GetRedisDatabase().ListRangeAsync(stream, -1, -1);
 
-        return result.Any()?JsonConvert.DeserializeObject<EventData>(result.First()): default ;
+        
+        List<EventData> list = new List<EventData>();
+        foreach (var redisValue in result)
+        {
+            EventData eventData = JsonConvert.DeserializeObject<EventData>(redisValue);
+            list.Add(eventData);
+        }
+        return list;
     }
 
-    public async Task<Demotest> ReadStreamEventsBackwardTestAsync(string stream, long start, int count)
-    {
-        var result=   GetRedisDatabase().ListRange(stream, -1, -1);
-
-        return result.Any()?JsonConvert.DeserializeObject<Demotest>(result.First()): default ;
-    }
-    
+  
  
+    /*
     public class Demotest
     {
         public string name { set; get; }
         public string age { set; get; }
     }
-    
 
+    public void MainTest()
+    {
+        AddChild(true,1);
 
+    }
+
+    private Dictionary<string, object> AddChild(bool hasChild,int type)
+    {
+        Dictionary<string, object> d = new Dictionary<string, object>();
+        if (type==1)
+        {
+           
+            Object o = null;
+            if (hasChild)
+            {
+                o = AddChild(true, 2);
+            }
+            d.Add("子集1",o);
+        }
+        if (type==2)
+        {
+            
+            if (hasChild)
+            {
+            
+            }
+        }
+
+        return d;
+    }*/
 }

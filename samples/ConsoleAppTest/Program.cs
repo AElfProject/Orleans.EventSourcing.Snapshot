@@ -1,5 +1,5 @@
 ﻿
-using SimpleSample.KV;
+using Orleans.EventSourcing.KV;
 
 namespace ConsoleAppTest
 {

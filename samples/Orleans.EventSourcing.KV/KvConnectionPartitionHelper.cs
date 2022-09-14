@@ -2,7 +2,7 @@ using EventStore.ClientAPI;
 using Newtonsoft.Json;
 using StackExchange.Redis;
 
-namespace SimpleSample.KV;
+namespace Orleans.EventSourcing.KV;
 
 public class KvConnectionPartitionHelper:IKvConnection
 {
@@ -42,7 +42,7 @@ public class KvConnectionPartitionHelper:IKvConnection
     public async Task<List<EventData>> ReadStreamEventsForwardAsync(string stream, long start, int count)
     {
         List<EventData> list = new List<EventData>();
-        var result = ReadStreamTest(stream,start,count);
+        var result = ReadStreamData(stream,start,count);
 
         foreach (var redisValue in result)
         {
@@ -52,20 +52,9 @@ public class KvConnectionPartitionHelper:IKvConnection
         return list;
     }
 
-    public async Task<List<string>> ReadStreamEventsForwardTestAsync(string stream, long start, int count)
-    {
-        List<string> list = new List<string>();
-        var result = ReadStreamTest(stream,start,count);
-
-        foreach (var redisValue in result)
-        {
-            string eventData = JsonConvert.DeserializeObject<string>(redisValue);
-            list.Add(eventData);
-        }
-        return list;
-    }
     
-    public List<RedisValue> ReadStreamTest(string stream, long start, int count)
+    
+    public List<RedisValue> ReadStreamData(string stream, long start, int count)
     {
         List<RedisValue> allList = new List<RedisValue>();
         var endRegion = (start + count) / PartitionSize +
@@ -106,6 +95,9 @@ public class KvConnectionPartitionHelper:IKvConnection
         int eventCount = events.Count();
         var tempversion = expectedVersion+1 - eventCount;
         bool result = true;
+        //await GetRedisDatabase().ListRightPushAsync(stream,
+         //   events.Select(e => new RedisValue(JsonConvert.SerializeObject(e))).ToArray());
+        
         foreach (var eventData in events)
         {
             var keyName =stream+"_"+ GetPartition(tempversion);
@@ -123,35 +115,18 @@ public class KvConnectionPartitionHelper:IKvConnection
         return result;
     }
 
-    public async Task<bool> AppendToStreamTestAsync(string stream, long expectedVersion, List<string> events
-    )
-    {
-        int eventCount = events.Count();
-        var tempversion = expectedVersion+2 - eventCount;
-        bool result = true;
-        foreach (var eventData in events)
-        {
-            var keyName =stream+"_"+ GetPartition(tempversion);
-            
-            var l= GetRedisDatabase().ListRightPush(keyName,JsonConvert.SerializeObject(eventData));
-            if (l<1)
-            {
-                result = false;
-            }
-
-            tempversion += 1;
-        }
-
-
-        return result;
-    }
-    
-    public async Task<EventData> ReadStreamEventsBackwardAsync(string stream, long start, int count)
+   
+    public async Task<List<EventData>> ReadStreamEventsBackwardAsync(string stream, long start, int count)
     {
         var keyName =stream+"_"+ GetPartition(start);
-        var result=  GetRedisDatabase().ListRange(keyName, -1,-1);
-        EventData eventData = JsonConvert.DeserializeObject<EventData>(result[0]);
-        return eventData;
+        var result= await GetRedisDatabase().ListRangeAsync(keyName, -1,-1);
+        List<EventData> list = new List<EventData>();
+        foreach (var redisValue in result)
+        {
+            EventData eventData = JsonConvert.DeserializeObject<EventData>(redisValue);
+            list.Add(eventData);
+        }
+        return list;
     }
 
     private long  GetPartition(long version)

@@ -1,15 +1,23 @@
 using EventStore.ClientAPI;
 using EventStore.ClientAPI.SystemData;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using StackExchange.Redis;
 
-namespace SimpleSample.KV;
+namespace Orleans.EventSourcing.KV;
 
 public class KvConnectionAllHelper :IKvConnection
 {
-    private  string KvConnectionSTR = APIConfHelper.AppSettings["KvConnectionSTR"].ToString();
+    //private  string KvConnectionSTR = APIConfHelper.AppSettings["KvConnectionSTR"].ToString();
+    private  string KvConnectionSTR = "localhost:6379";
     private static object KvLock = new object();
     private  ConnectionMultiplexer _connection;
+
+    /*public KvConnectionAllHelper(IConfiguration configuration)
+    {
+        _configuration = configuration;
+    }*/
+    public IConfiguration _configuration { get; }
 
     public   ConnectionMultiplexer Instance
     {
@@ -44,7 +52,7 @@ public class KvConnectionAllHelper :IKvConnection
     {
         List<EventData> list = new List<EventData>();
 
-        for (int i = 0; i < count-1; i++)
+        for (int i = 0; i < count; i++)
         {
             var redisValue = await GetRedisDatabase().StringGetAsync(stream + (start + i));
             list.Add(JsonConvert.DeserializeObject<EventData>(redisValue));
@@ -70,9 +78,16 @@ public class KvConnectionAllHelper :IKvConnection
         return result;
     }
 
-    public async Task<EventData> ReadStreamEventsBackwardAsync(string stream, long start, int count)
+    public async Task<List<EventData>> ReadStreamEventsBackwardAsync(string stream, long start, int count)
     {
-        var redisValue = await GetRedisDatabase().StringGetAsync(stream + start );
-        return JsonConvert.DeserializeObject<EventData>(redisValue);
+        List<EventData> list = new List<EventData>();
+
+        for (int i = 0; i < count; i++)
+        {
+            var redisValue = await GetRedisDatabase().StringGetAsync(stream + (start - i));
+            list.Add(JsonConvert.DeserializeObject<EventData>(redisValue));
+        }
+
+        return list;
     }
 }

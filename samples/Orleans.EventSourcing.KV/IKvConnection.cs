@@ -1,7 +1,7 @@
 using EventStore.ClientAPI;
 using EventStore.ClientAPI.SystemData;
 
-namespace SimpleSample.KV;
+namespace Orleans.EventSourcing.KV;
 
 public interface IKvConnection
 {
@@ -15,7 +15,7 @@ public interface IKvConnection
         long expectedVersion,
         IEnumerable<EventData> events);
 
-    Task<EventData> ReadStreamEventsBackwardAsync(
+    Task<List<EventData>> ReadStreamEventsBackwardAsync(
         string stream,
         long start,
         int count);

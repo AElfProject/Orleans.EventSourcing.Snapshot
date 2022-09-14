@@ -8,7 +8,7 @@ using System.IO;
 using System.Xml;
 using System.Reflection;
 using System.Diagnostics;
-namespace SimpleSample.KV
+namespace Orleans.EventSourcing.KV
 {
     /// <summary>    
     /// 支持AppSettings和ConnectionStrings节点 ,如需其他节点请自行扩展
