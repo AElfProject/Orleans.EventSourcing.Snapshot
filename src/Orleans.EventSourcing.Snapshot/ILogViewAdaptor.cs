@@ -69,7 +69,6 @@ namespace Orleans.EventSourcing.Snapshot;
         /// <param name="toVersion">the end position</param>
         /// <returns>a </returns>
         Task<IReadOnlyList<TLogEntry>> RetrieveLogSegment(int fromVersion, int toVersion);
-
     }
 
     /// <summary>
@@ -78,8 +77,6 @@ namespace Orleans.EventSourcing.Snapshot;
     /// <typeparam name="TLogEntry">The type of log entries.</typeparam>
     public interface ILogViewUpdate<TLogEntry>
     {
-        void NeedSnapshot();
-
         /// <summary>
         /// Submit a single log entry to be appended to the global log,
         /// either at the current or at any later position.

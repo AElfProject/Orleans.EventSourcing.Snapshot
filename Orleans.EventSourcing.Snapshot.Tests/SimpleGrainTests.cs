@@ -4,12 +4,12 @@ using Xunit;
 
 namespace Orleans.EventSourcing.Snapshot.Tests;
 
-[Collection(SnapshotClusterCollection.Name)]
+[Collection(ClusterCollection.Name)]
 public class SimpleGrainTests
 {
     private readonly TestCluster _cluster;
 
-    public SimpleGrainTests(SnapshotClusterFixture fixture)
+    public SimpleGrainTests(ClusterFixture fixture)
     {
         _cluster = fixture.Cluster;
     }
@@ -30,11 +30,17 @@ public class SimpleGrainTests
         var grain = _cluster.GrainFactory.GetGrain<INumberGrain>(Guid.NewGuid());
 
         await grain.PushNumber(5);
-        await grain.PushNumber(3);
-        await grain.PushNumber(12);
+        await grain.PushNumber(4);
+        await grain.PushNumber(11);
         await grain.PushNumber(6);
 
         Task<int> sum = grain.GetTotalSum();
         Assert.Equal(26,await sum);
+
+        Task<int> snapshotSum = grain.GetSnapshotSum();
+        Assert.Equal(9,await snapshotSum);
+
+        Task<int> snapshotTotalSum = grain.GetSnapshotTotalSum();
+        Assert.Equal(9,await snapshotTotalSum);
     }
 }

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Orleans.EventSourcing.Snapshot
 {
-    public class LogViewAdaptor<TLogView, TLogEntry> : PrimaryBasedLogViewAdaptor<TLogView, TLogEntry, SubmissionEntry<TLogEntry>>
+    public class LogViewAdaptor<TLogView, TLogEntry> : PrimaryBasedLogViewAdaptor<TLogView, TLogEntry, SubmissionEntry<TLogEntry>>,ILogViewSnapshotAdaptor<TLogView,TLogEntry>
         where TLogView : class, new()
         where TLogEntry : class
     {
@@ -50,6 +50,34 @@ namespace Orleans.EventSourcing.Snapshot
                     ?? throw new ArgumentNullException(nameof(eventStorage),
                         "Must set eventStorage when useIndependentEventStorage is true");
             }
+        }
+        
+        private bool _needSnapshot;
+
+        public void SetNeedSnapshotFlag()
+        {
+            _needSnapshot = true;
+        }
+
+        public async Task<SnapshotStateWithMetaData<TLogView, TLogEntry>> GetLastSnapshotMetaDataAsync()
+        {
+            SnapshotStateWithMetaDataAndETag<TLogView, TLogEntry> storageSnapshotState =
+                new SnapshotStateWithMetaDataAndETag<TLogView, TLogEntry>();
+            await _grainStorage.ReadStateAsync(_grainTypeName, Services.GrainReference, storageSnapshotState);
+            // await EnsureStateGlobalVersion();
+            
+            if (!_useIndependentEventStorage)
+            {
+                storageSnapshotState.StateAndMetaData.GlobalVersion = _snapshotState.StateAndMetaData.Log.Count;
+            }
+            else
+            {
+                var count = await _eventStorage.EventsCount(_grainTypeName, Services.GrainReference);
+
+                storageSnapshotState.StateAndMetaData.GlobalVersion = count + _snapshotState.StateAndMetaData.Log.Count;
+            }
+
+            return storageSnapshotState.StateAndMetaData;
         }
 
         public override async Task<IReadOnlyList<TLogEntry>> RetrieveLogSegment(int fromVersion, int toVersion)

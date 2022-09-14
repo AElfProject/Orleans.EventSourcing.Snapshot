@@ -278,12 +278,7 @@ namespace Orleans.EventSourcing.Snapshot;
             }
         }
 
-        protected bool _needSnapshot;
-
-        public void NeedSnapshot()
-        {
-            _needSnapshot = true;
-        }
+        
 
         /// <inheritdoc />
         public void Submit(TLogEntry logEntry)

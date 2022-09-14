@@ -55,7 +55,7 @@ public abstract class JournaledSnapshotGrain<TGrainState,TEventBase> :
         {
             if (@event == null) throw new ArgumentNullException("event");
 
-            if(isNeedStorageSnapshot) LogViewAdaptor.NeedSnapshot();
+            if(isNeedStorageSnapshot) LogViewAdaptor.SetNeedSnapshotFlag();
             LogViewAdaptor.Submit(@event);
         }
 
@@ -69,7 +69,7 @@ public abstract class JournaledSnapshotGrain<TGrainState,TEventBase> :
         {
             if (events == null) throw new ArgumentNullException("events");
 
-            if(isNeedStorageSnapshot) LogViewAdaptor.NeedSnapshot();
+            if(isNeedStorageSnapshot) LogViewAdaptor.SetNeedSnapshotFlag();
             LogViewAdaptor.SubmitRange((IEnumerable<TEventBase>) events);
         }
 
@@ -85,7 +85,7 @@ public abstract class JournaledSnapshotGrain<TGrainState,TEventBase> :
         {
             if (@event == null) throw new ArgumentNullException("event");
             
-            if(isNeedStorageSnapshot) LogViewAdaptor.NeedSnapshot();
+            if(isNeedStorageSnapshot) LogViewAdaptor.SetNeedSnapshotFlag();
             return LogViewAdaptor.TryAppend(@event);
         }
 
@@ -101,7 +101,7 @@ public abstract class JournaledSnapshotGrain<TGrainState,TEventBase> :
         {
             if (events == null) throw new ArgumentNullException("events");
             
-            if(isNeedStorageSnapshot) LogViewAdaptor.NeedSnapshot();
+            if(isNeedStorageSnapshot) LogViewAdaptor.SetNeedSnapshotFlag();
             return LogViewAdaptor.TryAppendRange((IEnumerable<TEventBase>) events);
         }
 
@@ -123,10 +123,10 @@ public abstract class JournaledSnapshotGrain<TGrainState,TEventBase> :
             get { return this.LogViewAdaptor.ConfirmedVersion; }
         }
 
-        // protected Task<SnapshotStateWithMetaData<TGrainState, TEventBase>> GetLastSnapshotMetaData()
-        // {
-        //     return this.LogViewAdaptor.GetLastSnapshotMetaData(); 
-        // }
+        protected async Task<SnapshotStateWithMetaData<TGrainState, TEventBase>> GetLastSnapshotMetaData()
+        {
+            return await this.LogViewAdaptor.GetLastSnapshotMetaDataAsync(); 
+        }
 
         /// <summary>
         /// Called whenever the tentative state may have changed due to local or remote events.
@@ -275,7 +275,7 @@ public abstract class JournaledSnapshotGrain<TGrainState,TEventBase> :
         /// Adaptor for log consistency protocol.
         /// Is installed by the log-consistency provider.
         /// </summary>
-        internal ILogViewAdaptor<TGrainState, TEventBase> LogViewAdaptor { get; private set; }
+        internal ILogViewSnapshotAdaptor<TGrainState, TEventBase> LogViewAdaptor { get; private set; }
 
         /// <summary>
         /// Called right after grain is constructed, to install the adaptor.

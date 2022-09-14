@@ -22,7 +22,8 @@ namespace Orleans.EventSourcing.Snapshot.StateStorage;
     /// </summary>
     /// <typeparam name="TLogView">Type of log view</typeparam>
     /// <typeparam name="TLogEntry">Type of log entry</typeparam>
-    internal class LogViewAdaptor<TLogView, TLogEntry> : PrimaryBasedLogViewAdaptor<TLogView, TLogEntry, SubmissionEntry<TLogEntry>> where TLogView : class, new() where TLogEntry : class
+    internal class LogViewAdaptor<TLogView, TLogEntry> : PrimaryBasedLogViewAdaptor<TLogView, TLogEntry, SubmissionEntry<TLogEntry>>,ILogViewSnapshotAdaptor<TLogView,TLogEntry>
+    where TLogView : class, new() where TLogEntry : class
     {
         /// <summary>
         /// Initialize a StorageProviderLogViewAdaptor class
@@ -42,6 +43,19 @@ namespace Orleans.EventSourcing.Snapshot.StateStorage;
         string grainTypeName;        // stores the confirmed state including metadata
         GrainStateWithMetaDataAndETag<TLogView> GlobalStateCache;
 
+        
+        protected bool _needSnapshot;
+
+        public void SetNeedSnapshotFlag()
+        {
+            // _needSnapshot = true;
+        }
+
+        public Task<SnapshotStateWithMetaData<TLogView, TLogEntry>> GetLastSnapshotMetaDataAsync()
+        {
+            return Task.FromResult(new SnapshotStateWithMetaData<TLogView, TLogEntry>());
+        }
+        
         /// <inheritdoc/>
         protected override TLogView LastConfirmedView()
         {

@@ -35,6 +35,30 @@ public class NumberGrain:JournaledSnapshotGrain<NumberGrain.GrainState>,INumberG
     {
         return Task.FromResult(this.State.totalSum);
     }
+
+    public async Task<int> GetSnapshotSum()
+    {
+        SnapshotStateWithMetaData<GrainState, object> metaData = await GetLastSnapshotMetaData();
+
+        List<int> snapshotList = metaData.Snapshot.numList;
+
+        int sum = 0;
+        foreach (int num in snapshotList)
+        {
+            sum = sum + num;
+        }
+
+        return sum;
+    }
+
+    public async Task<int> GetSnapshotTotalSum()
+    {
+        SnapshotStateWithMetaData<GrainState, object> metaData = await GetLastSnapshotMetaData();
+        
+        int snapshotTotalSum = metaData.Snapshot.totalSum;
+
+        return snapshotTotalSum;
+    }
 }
 
 [Serializable]

@@ -24,7 +24,7 @@ namespace Orleans.EventSourcing.Snapshot
             _snapshotStrategy = snapshotStrategy;
         }
 
-        public ILogViewAdaptor<TLogView, TLogEntry> MakeLogViewAdaptor<TLogView, TLogEntry>(
+        public ILogViewSnapshotAdaptor<TLogView, TLogEntry> MakeLogViewAdaptor<TLogView, TLogEntry>(
             ILogViewAdaptorHost<TLogView, TLogEntry> hostGrain, 
             TLogView initialState, 
             string grainTypeName, 

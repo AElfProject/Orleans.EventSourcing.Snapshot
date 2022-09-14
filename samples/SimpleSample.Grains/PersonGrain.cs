@@ -17,7 +17,6 @@ namespace SimpleSample.Grains
             }
             
             RaiseEvent(new PersonSaidEvent { Said = content },isNeedStorageSnapshot);
-
             return Task.CompletedTask;
         }
 
@@ -36,6 +35,20 @@ namespace SimpleSample.Grains
         public Task<string> GetNickName()
         {
             return Task.FromResult(TentativeState.NickName);
+        }
+
+        public async Task<List<string>> GetLastStorageSaids()
+        {
+            SnapshotStateWithMetaData<PersonState,object> metaData = await GetLastSnapshotMetaData();
+
+            return metaData.Snapshot.HistorySaids;
+        }
+
+        public async Task<int> GetLastStorageStateGlobalVersion()
+        {
+            SnapshotStateWithMetaData<PersonState, object> metaData = await GetLastSnapshotMetaData();
+
+            return metaData.GlobalVersion;
         }
     }
 
