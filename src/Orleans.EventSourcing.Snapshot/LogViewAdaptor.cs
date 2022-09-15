@@ -68,13 +68,13 @@ namespace Orleans.EventSourcing.Snapshot
             
             if (!_useIndependentEventStorage)
             {
-                storageSnapshotState.StateAndMetaData.GlobalVersion = _snapshotState.StateAndMetaData.Log.Count;
+                storageSnapshotState.StateAndMetaData.GlobalVersion = storageSnapshotState.StateAndMetaData.Log.Count;
             }
             else
             {
                 var count = await _eventStorage.EventsCount(_grainTypeName, Services.GrainReference);
 
-                storageSnapshotState.StateAndMetaData.GlobalVersion = count + _snapshotState.StateAndMetaData.Log.Count;
+                storageSnapshotState.StateAndMetaData.GlobalVersion = count + storageSnapshotState.StateAndMetaData.Log.Count;
             }
 
             return storageSnapshotState.StateAndMetaData;

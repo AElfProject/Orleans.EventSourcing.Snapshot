@@ -123,6 +123,10 @@ public abstract class JournaledSnapshotGrain<TGrainState,TEventBase> :
             get { return this.LogViewAdaptor.ConfirmedVersion; }
         }
 
+        /// <summary>
+        /// Get the current Snapshot meta data of persistent storage
+        /// </summary>
+        /// <returns>snapshot meta data object</returns>
         protected async Task<SnapshotStateWithMetaData<TGrainState, TEventBase>> GetLastSnapshotMetaData()
         {
             return await this.LogViewAdaptor.GetLastSnapshotMetaDataAsync(); 
