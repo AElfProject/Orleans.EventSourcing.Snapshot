@@ -43,8 +43,6 @@ public class SnapshotClusterFixture: IDisposable
                 })
                 .AddSnapshotStorageBasedLogConsistencyProviderAsDefault((op, name) => 
                 {
-                    // Take snapshot every five events
-                    op.SnapshotStrategy = strategyInfo => strategyInfo.CurrentConfirmedVersion - strategyInfo.SnapshotVersion >= 5;
                     op.UseIndependentEventStorage = true;
                     // Should configure event storage when set UseIndependentEventStorage true
                     op.ConfigureIndependentEventStorage = (services, name) =>

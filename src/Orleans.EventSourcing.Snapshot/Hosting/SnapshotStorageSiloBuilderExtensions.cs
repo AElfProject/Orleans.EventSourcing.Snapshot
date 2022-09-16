@@ -64,7 +64,7 @@ namespace Orleans.EventSourcing.Snapshot.Hosting
             }
 
             services
-                .AddSingletonNamedService(name, (sp, n) => LogConsistencyProviderFactory.Create(sp, n, options.SnapshotStrategy))
+                .AddSingletonNamedService(name, (sp, n) => LogConsistencyProviderFactory.Create(sp, n))
                 .TryAddSingleton(sp => sp.GetServiceByName<ILogViewAdaptorFactory>(ProviderConstants.DEFAULT_STORAGE_PROVIDER_NAME));
 
             return services;

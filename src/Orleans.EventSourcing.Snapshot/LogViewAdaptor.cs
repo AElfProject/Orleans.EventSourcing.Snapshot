@@ -19,7 +19,6 @@ namespace Orleans.EventSourcing.Snapshot
 
         private IGrainStorage _grainStorage;
         private string _grainTypeName;
-        private Func<SnapshotStrategyInfo, bool> _snapshotStrategy;
         private bool _useIndependentEventStorage;
         private IGrainEventStorage _eventStorage;
 
@@ -33,7 +32,6 @@ namespace Orleans.EventSourcing.Snapshot
             TLogView initialState,
             IGrainStorage grainStorage,
             string grainTypeName,
-            Func<SnapshotStrategyInfo, bool> snapshotStrategy,
             ILogConsistencyProtocolServices services,
             bool useIndependentEventStorage,
             IGrainEventStorage eventStorage)
@@ -41,7 +39,6 @@ namespace Orleans.EventSourcing.Snapshot
         {
             _grainStorage = grainStorage;
             _grainTypeName = grainTypeName;
-            _snapshotStrategy = snapshotStrategy;
             _useIndependentEventStorage = useIndependentEventStorage;
 
             if (useIndependentEventStorage)
@@ -459,16 +456,6 @@ namespace Orleans.EventSourcing.Snapshot
             }
         }
 
-        private SnapshotStrategyInfo GetSnapshotStrategyInfo()
-        {
-            return new SnapshotStrategyInfo
-            {
-                CurrentConfirmedVersion = _confirmedVersionInternal,
-                SnapshotVersion = _snapshotState.StateAndMetaData.SnapshotVersion,
-                SnapshotUpdatedTime = _snapshotState.StateAndMetaData.SnapshotUpdatedTime
-            };
-        }
-        
 
 #if DEBUG
         private bool operation_in_progress;

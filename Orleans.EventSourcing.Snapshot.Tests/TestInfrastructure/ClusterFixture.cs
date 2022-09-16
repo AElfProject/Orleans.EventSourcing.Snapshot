@@ -30,8 +30,6 @@ public class ClusterFixture: IDisposable
                 }).AddMemoryGrainStorageAsDefault()
                 .AddSnapshotStorageBasedLogConsistencyProviderAsDefault((op, name) => 
                 {
-                    // Take snapshot every five events
-                    op.SnapshotStrategy = strategyInfo => strategyInfo.CurrentConfirmedVersion - strategyInfo.SnapshotVersion >= 5;
                     op.UseIndependentEventStorage = false;
                 });
         }
