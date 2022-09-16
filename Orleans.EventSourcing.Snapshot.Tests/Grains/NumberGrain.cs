@@ -19,13 +19,13 @@ public class NumberGrain:JournaledSnapshotGrain<NumberGrain.GrainState>,INumberG
     
     public async Task PushNumber(int a)
     {
-        bool isNeedStorageSnapshot = false;
+        bool needSnapshot = false;
         if (a > 10)
         {
-            isNeedStorageSnapshot = true;
+            needSnapshot = true;
             // this.State.numList=
         }
-        RaiseEvent(new EventPush { num = a}, isNeedStorageSnapshot);
+        RaiseEvent(new EventPush { num = a}, needSnapshot);
         await ConfirmEvents();
         return;
     }

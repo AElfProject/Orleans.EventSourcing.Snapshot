@@ -16,35 +16,49 @@ public class CalculateGrain:JournaledSnapshotGrain<CalculateGrain.GrainState>,IC
         {
             resultList.Add(@event.num1+@event.num2);
         }
+        
+        public void Apply(EventSub @event)
+        {
+            resultList.Add(@event.num1-@event.num2);
+        }
 
         public void Apply(EventMul @event)
         {
             resultList.Add(@event.num1*@event.num2);
         }
+        
+        public void Apply(EventDiv @event)
+        {
+            resultList.Add(@event.num1/@event.num2);
+        }
     }
     
-    public Task<int> CalculateAddition(int a, int b)
+    public async Task<int> CalculateAddition(int a, int b)
     {
         RaiseEvent(new EventAdd { num1 = a, num2 = b }, true);
-        ConfirmEvents();
-        return Task.FromResult(a + b);
+        await ConfirmEvents();
+        return (a + b);
     }
 
-    public Task<int> CalculateSubtraction(int x, int y)
+    public async Task<int> CalculateSubtraction(int x, int y)
     {
-        return Task.FromResult(x - y);
+        RaiseEvent(new EventMul { num1 = x, num2 = y }, true);
+        await ConfirmEvents();
+        return (x - y);
     }
 
-    public Task<int> CalculateMultiplication(int i, int j)
+    public async Task<int> CalculateMultiplication(int i, int j)
     {
         RaiseEvent(new EventMul { num1 = i, num2 = j }, true);
-        ConfirmEvents();
-        return Task.FromResult(i * j);
+        await ConfirmEvents();
+        return (i * j);
     }
 
-    public Task<int> CalculateDivision(int o, int p)
+    public async Task<int> CalculateDivision(int o, int p)
     {
-        return Task.FromResult(o / p);
+        RaiseEvent(new EventMul { num1 = o, num2 = p }, true);
+        await ConfirmEvents();
+        return (o / p);
     }
 
     public Task<List<int>> GetResultList()
@@ -62,7 +76,21 @@ public class EventAdd
 }
 
 [Serializable]
+public class EventSub
+{
+    public int num1 { get; set; }
+    public int num2 { get; set; }
+}
+
+[Serializable]
 public class EventMul
+{
+    public int num1 { get; set; }
+    public int num2 { get; set; }
+}
+
+[Serializable]
+public class EventDiv
 {
     public int num1 { get; set; }
     public int num2 { get; set; }

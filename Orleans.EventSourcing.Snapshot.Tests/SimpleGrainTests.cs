@@ -22,7 +22,6 @@ public class SimpleGrainTests
 
         int result = await grain.CalculateAddition(6, 7);
         result.ShouldBe(13);
-        // Assert.Equal(13,result);
     }
 
     [Fact]

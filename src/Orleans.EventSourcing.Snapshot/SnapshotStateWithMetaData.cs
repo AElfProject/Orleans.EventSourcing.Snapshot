@@ -12,7 +12,7 @@ namespace Orleans.EventSourcing.Snapshot
         public SnapshotStateWithMetaData<TState, TEntry> StateAndMetaData { get; set; }
 
         public string ETag { get; set; }
-		
+
         public bool RecordExists
         {
             get => StateAndMetaData.GlobalVersion > 0;
@@ -46,7 +46,8 @@ namespace Orleans.EventSourcing.Snapshot
 
     [Serializable]
     public class SnapshotStateWithMetaData<TState, TEntry>
-        where TState : new()
+        where TState : class, new()
+        where TEntry : class
     {
         public List<TEntry> Log { get; set; }
 

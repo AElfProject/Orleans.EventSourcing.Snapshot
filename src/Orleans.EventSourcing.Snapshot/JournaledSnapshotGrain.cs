@@ -50,12 +50,12 @@ public abstract class JournaledSnapshotGrain<TGrainState,TEventBase> :
         /// </summary>
         /// <param name="event">Event to raise</param>
         /// <returns></returns>
-        protected virtual void RaiseEvent<TEvent>(TEvent @event,bool isNeedStorageSnapshot=false) 
+        protected virtual void RaiseEvent<TEvent>(TEvent @event, bool needSnapshot = false)
             where TEvent : TEventBase
         {
             if (@event == null) throw new ArgumentNullException("event");
 
-            if(isNeedStorageSnapshot) LogViewAdaptor.SetNeedSnapshotFlag();
+            if (needSnapshot) LogViewAdaptor.SetNeedSnapshotFlag();
             LogViewAdaptor.Submit(@event);
         }
 
@@ -64,13 +64,13 @@ public abstract class JournaledSnapshotGrain<TGrainState,TEventBase> :
         /// </summary>
         /// <param name="events">Events to raise</param>
         /// <returns></returns>
-        protected virtual void RaiseEvents<TEvent>(IEnumerable<TEvent> events,bool isNeedStorageSnapshot=false) 
+        protected virtual void RaiseEvents<TEvent>(IEnumerable<TEvent> events, bool needSnapshot = false)
             where TEvent : TEventBase
         {
             if (events == null) throw new ArgumentNullException("events");
 
-            if(isNeedStorageSnapshot) LogViewAdaptor.SetNeedSnapshotFlag();
-            LogViewAdaptor.SubmitRange((IEnumerable<TEventBase>) events);
+            if (needSnapshot) LogViewAdaptor.SetNeedSnapshotFlag();
+            LogViewAdaptor.SubmitRange((IEnumerable<TEventBase>)events);
         }
 
 
@@ -80,12 +80,12 @@ public abstract class JournaledSnapshotGrain<TGrainState,TEventBase> :
         /// </summary>
         /// <param name="event">Event to raise</param>
         /// <returns>true if successful, false if there was a conflict.</returns>
-        protected virtual Task<bool> RaiseConditionalEvent<TEvent>(TEvent @event,bool isNeedStorageSnapshot=false)
+        protected virtual Task<bool> RaiseConditionalEvent<TEvent>(TEvent @event, bool needSnapshot = false)
             where TEvent : TEventBase
         {
             if (@event == null) throw new ArgumentNullException("event");
-            
-            if(isNeedStorageSnapshot) LogViewAdaptor.SetNeedSnapshotFlag();
+
+            if (needSnapshot) LogViewAdaptor.SetNeedSnapshotFlag();
             return LogViewAdaptor.TryAppend(@event);
         }
 
@@ -96,13 +96,14 @@ public abstract class JournaledSnapshotGrain<TGrainState,TEventBase> :
         /// </summary>
         /// <param name="events">Events to raise</param>
         /// <returns>true if successful, false if there was a conflict.</returns>
-        protected virtual Task<bool> RaiseConditionalEvents<TEvent>(IEnumerable<TEvent> events,bool isNeedStorageSnapshot=false)
+        protected virtual Task<bool> RaiseConditionalEvents<TEvent>(IEnumerable<TEvent> events,
+            bool needSnapshot = false)
             where TEvent : TEventBase
         {
             if (events == null) throw new ArgumentNullException("events");
-            
-            if(isNeedStorageSnapshot) LogViewAdaptor.SetNeedSnapshotFlag();
-            return LogViewAdaptor.TryAppendRange((IEnumerable<TEventBase>) events);
+
+            if (needSnapshot) LogViewAdaptor.SetNeedSnapshotFlag();
+            return LogViewAdaptor.TryAppendRange((IEnumerable<TEventBase>)events);
         }
 
         /// <summary>

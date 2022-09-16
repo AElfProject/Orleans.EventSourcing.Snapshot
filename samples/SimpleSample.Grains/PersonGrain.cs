@@ -10,13 +10,13 @@ namespace SimpleSample.Grains
     {
         public Task Say(string content)
         {
-            bool isNeedStorageSnapshot = false;
+            bool needSnapshot = false;
             if (content.Contains("5"))
             {
-                isNeedStorageSnapshot = true;
+                needSnapshot = true;
             }
             
-            RaiseEvent(new PersonSaidEvent { Said = content },isNeedStorageSnapshot);
+            RaiseEvent(new PersonSaidEvent { Said = content },needSnapshot);
             return Task.CompletedTask;
         }
 

@@ -5,18 +5,18 @@ namespace Orleans.EventSourcing.Snapshot;
 
 public interface ILogViewSnapshotAdaptor<TView, TLogEntry> : ILogViewAdaptor<TView, TLogEntry>,
     ILogViewSnapshot<TView, TLogEntry>
-    where TView : new()
+    where TView : class, new()
+    where TLogEntry : class
 {
-
 }
 
-public interface ILogViewSnapshot<TView, TLogEntry> where TView : new()
+public interface ILogViewSnapshot<TView, TLogEntry> where TView : class, new() where TLogEntry : class
 {
     /// <summary>
     /// Interface for setting a flag to determine whether to write a state snapshot 
     /// </summary>
     void SetNeedSnapshotFlag();
-    
+
     /// <summary>
     /// get the latest storage of snapshot meta data
     /// </summary>
