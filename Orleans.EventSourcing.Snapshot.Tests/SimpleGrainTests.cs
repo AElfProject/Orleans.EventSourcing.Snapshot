@@ -20,8 +20,8 @@ public class SimpleGrainTests
     {
         var grain = _cluster.GrainFactory.GetGrain<ICalculateGrain>(3);
 
-        Task<int> result = grain.CalculateAddition(6, 7);
-        Assert.Equal(13,await result);
+        int result = await grain.CalculateAddition(6, 7);
+        Assert.Equal(13,result);
     }
 
     [Fact]
