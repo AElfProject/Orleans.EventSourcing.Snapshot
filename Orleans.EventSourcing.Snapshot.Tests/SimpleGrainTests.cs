@@ -33,28 +33,28 @@ public class SimpleGrainTests
         await grain.PushNumber(4);
         await grain.PushNumber(11);
         await grain.PushNumber(6);
+        
+        int sum = await grain.GetTotalSum();
+        Assert.Equal(26,sum);
 
-        Task<int> sum = grain.GetTotalSum();
-        Assert.Equal(26,await sum);
+        int snapshotSum = await grain.GetSnapshotSum();
+        Assert.Equal(9,snapshotSum);
 
-        Task<int> snapshotSum = grain.GetSnapshotSum();
-        Assert.Equal(9,await snapshotSum);
-
-        Task<int> snapshotTotalSum = grain.GetSnapshotTotalSum();
-        Assert.Equal(9,await snapshotTotalSum);
+        int snapshotTotalSum = await grain.GetSnapshotTotalSum();
+        Assert.Equal(9,snapshotTotalSum);
 
         await grain.PushNumber(2);
         await grain.PushNumber(17);
         await grain.PushNumber(10);
         await grain.PushNumber(4);
         
-        Task<int> sum2 = grain.GetTotalSum();
-        Assert.Equal(59,await sum2);
+        int sum2 = await grain.GetTotalSum();
+        Assert.Equal(59,sum2);
         
-        Task<int> snapshotSum2 = grain.GetSnapshotSum();
-        Assert.Equal(28,await snapshotSum2);
+        int snapshotSum2 = await grain.GetSnapshotSum();
+        Assert.Equal(28,snapshotSum2);
         
-        Task<int> snapshotTotalSum2 = grain.GetSnapshotTotalSum();
-        Assert.Equal(28,await snapshotTotalSum2);
+        int snapshotTotalSum2 = await grain.GetSnapshotTotalSum();
+        Assert.Equal(28,snapshotTotalSum2);
     }
 }
