@@ -1,5 +1,5 @@
 using Orleans.TestingHost;
-using TestGrainInterfaces;
+using Shouldly;
 using Xunit;
 
 namespace Orleans.EventSourcing.Snapshot.Tests;
@@ -21,7 +21,8 @@ public class SimpleGrainTests
         var grain = _cluster.GrainFactory.GetGrain<ICalculateGrain>(3);
 
         int result = await grain.CalculateAddition(6, 7);
-        Assert.Equal(13,result);
+        result.ShouldBe(13);
+        // Assert.Equal(13,result);
     }
 
     [Fact]
@@ -35,13 +36,13 @@ public class SimpleGrainTests
         await grain.PushNumber(6);
         
         int sum = await grain.GetTotalSum();
-        Assert.Equal(26,sum);
+        sum.ShouldBe(26);
 
         int snapshotSum = await grain.GetSnapshotSum();
-        Assert.Equal(9,snapshotSum);
+        snapshotSum.ShouldBe(9);
 
         int snapshotTotalSum = await grain.GetSnapshotTotalSum();
-        Assert.Equal(9,snapshotTotalSum);
+        snapshotTotalSum.ShouldBe(9);
 
         await grain.PushNumber(2);
         await grain.PushNumber(17);
@@ -49,12 +50,12 @@ public class SimpleGrainTests
         await grain.PushNumber(4);
         
         int sum2 = await grain.GetTotalSum();
-        Assert.Equal(59,sum2);
-        
+        sum2.ShouldBe(59);
+
         int snapshotSum2 = await grain.GetSnapshotSum();
-        Assert.Equal(28,snapshotSum2);
-        
+        snapshotSum2.ShouldBe(28);
+
         int snapshotTotalSum2 = await grain.GetSnapshotTotalSum();
-        Assert.Equal(28,snapshotTotalSum2);
+        snapshotTotalSum2.ShouldBe(28);
     }
 }

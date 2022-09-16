@@ -1,9 +1,16 @@
 using System.Threading.Tasks;
+using Orleans.LogConsistency;
 
 namespace Orleans.EventSourcing.Snapshot;
 
-public interface ILogViewSnapshotAdaptor<TView, TLogEntry>:ILogViewAdaptor<TView,TLogEntry>
+public interface ILogViewSnapshotAdaptor<TView, TLogEntry> : ILogViewAdaptor<TView, TLogEntry>,
+    ILogViewSnapshot<TView, TLogEntry>
     where TView : new()
+{
+
+}
+
+public interface ILogViewSnapshot<TView, TLogEntry> where TView : new()
 {
     /// <summary>
     /// Interface for setting a flag to determine whether to write a state snapshot 

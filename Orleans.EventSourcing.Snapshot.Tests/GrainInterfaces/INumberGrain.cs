@@ -1,6 +1,6 @@
 using Orleans;
 
-namespace TestGrainInterfaces;
+namespace Orleans.EventSourcing.Snapshot.Tests;
 
 public interface INumberGrain:IGrainWithGuidKey
 {

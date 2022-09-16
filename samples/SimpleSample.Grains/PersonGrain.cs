@@ -37,14 +37,14 @@ namespace SimpleSample.Grains
             return Task.FromResult(TentativeState.NickName);
         }
 
-        public async Task<List<string>> GetLastStorageSaids()
+        public async Task<List<string>> GetLastSnapshotSaids()
         {
             SnapshotStateWithMetaData<PersonState,object> metaData = await GetLastSnapshotMetaData();
 
             return metaData.Snapshot.HistorySaids;
         }
 
-        public async Task<int> GetLastStorageStateGlobalVersion()
+        public async Task<int> GetLastSnapshotGlobalVersion()
         {
             SnapshotStateWithMetaData<PersonState, object> metaData = await GetLastSnapshotMetaData();
 

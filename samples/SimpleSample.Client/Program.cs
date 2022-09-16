@@ -36,10 +36,10 @@ namespace SimpleSample.Client
                 Console.WriteLine(string.Join(Environment.NewLine, historySaids));
                 Console.WriteLine("--------------------");
 
-                var snapshotList = await person.GetLastStorageSaids();
+                var snapshotList = await person.GetLastSnapshotSaids();
                 Console.WriteLine("Snapshot List:");
                 Console.WriteLine(string.Join(Environment.NewLine, snapshotList));
-                int globalVersion = await person.GetLastStorageStateGlobalVersion();
+                int globalVersion = await person.GetLastSnapshotGlobalVersion();
                 Console.WriteLine("Global Version:" + globalVersion);
                 Console.WriteLine();
             }

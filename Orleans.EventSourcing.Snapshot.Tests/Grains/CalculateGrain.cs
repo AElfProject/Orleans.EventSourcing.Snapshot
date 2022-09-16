@@ -1,8 +1,7 @@
 ﻿using Orleans.EventSourcing.Snapshot;
 using Orleans.Providers;
-using TestGrainInterfaces;
 
-namespace TestGrains;
+namespace Orleans.EventSourcing.Snapshot.Tests;
 
 // [StorageProvider(ProviderName = "Default")]
 // [LogConsistencyProvider(ProviderName = "LogStorage")]

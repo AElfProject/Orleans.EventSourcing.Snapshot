@@ -15,8 +15,8 @@ namespace SimpleSample.GrainInterfaces
 
         Task<string> GetNickName();
 
-        Task<List<string>> GetLastStorageSaids();
+        Task<List<string>> GetLastSnapshotSaids();
 
-        Task<int> GetLastStorageStateGlobalVersion();
+        Task<int> GetLastSnapshotGlobalVersion();
     }
 }

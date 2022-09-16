@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Orleans;
 
-namespace TestGrainInterfaces;
+namespace Orleans.EventSourcing.Snapshot.Tests;
 
 public interface ICalculateGrain:IGrainWithIntegerKey
 {

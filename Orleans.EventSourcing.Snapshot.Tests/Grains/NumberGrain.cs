@@ -1,7 +1,6 @@
 using Orleans.EventSourcing.Snapshot;
-using TestGrainInterfaces;
 
-namespace TestGrains;
+namespace Orleans.EventSourcing.Snapshot.Tests;
 
 public class NumberGrain:JournaledSnapshotGrain<NumberGrain.GrainState>,INumberGrain
 {

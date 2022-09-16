@@ -2,8 +2,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Orleans.EventSourcing.Snapshot.Hosting;
 using Orleans.Hosting;
 using Orleans.TestingHost;
-using TestGrainInterfaces;
-using TestGrains;
 
 namespace Orleans.EventSourcing.Snapshot.Tests;
 
