@@ -8,7 +8,7 @@ namespace SimpleSample.Grains
 {
     public class PersonGrain : JournaledSnapshotGrain<PersonState>, IPersonGrain
     {
-        public Task Say(string content)
+        public async Task Say(string content)
         {
             bool needSnapshot = false;
             if (content.Contains("5"))
@@ -17,7 +17,8 @@ namespace SimpleSample.Grains
             }
             
             RaiseEvent(new PersonSaidEvent { Said = content },needSnapshot);
-            return Task.CompletedTask;
+            await ConfirmEvents();
+            return;
         }
 
         public Task<List<string>> GetHistorySaids()
@@ -25,11 +26,11 @@ namespace SimpleSample.Grains
             return Task.FromResult(TentativeState.HistorySaids);
         }
 
-        public Task UpdateNickName(string newNickName)
+        public async Task UpdateNickName(string newNickName)
         {
             RaiseEvent(new PersonNickNameUpdatedEvent { NewNickName = newNickName },true);
-
-            return Task.CompletedTask;
+            await ConfirmEvents();
+            return;
         }
 
         public Task<string> GetNickName()

@@ -58,23 +58,7 @@ namespace Orleans.EventSourcing.Snapshot
 
         public async Task<SnapshotStateWithMetaData<TLogView, TLogEntry>> GetLastSnapshotMetaDataAsync()
         {
-            SnapshotStateWithMetaDataAndETag<TLogView, TLogEntry> storageSnapshotState =
-                new SnapshotStateWithMetaDataAndETag<TLogView, TLogEntry>();
-            await _grainStorage.ReadStateAsync(_grainTypeName, Services.GrainReference, storageSnapshotState);
-            // await EnsureStateGlobalVersion();
-            
-            if (!_useIndependentEventStorage)
-            {
-                storageSnapshotState.StateAndMetaData.GlobalVersion = storageSnapshotState.StateAndMetaData.Log.Count;
-            }
-            else
-            {
-                var count = await _eventStorage.EventsCount(_grainTypeName, Services.GrainReference);
-
-                storageSnapshotState.StateAndMetaData.GlobalVersion = count + storageSnapshotState.StateAndMetaData.Log.Count;
-            }
-
-            return storageSnapshotState.StateAndMetaData;
+            return _snapshotState.StateAndMetaData;
         }
 
         public override async Task<IReadOnlyList<TLogEntry>> RetrieveLogSegment(int fromVersion, int toVersion)
