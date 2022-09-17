@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Orleans;
 
 namespace Orleans.EventSourcing.Snapshot.Tests;

@@ -1,3 +1,4 @@
+using System;
 using EventStore.ClientAPI;
 using JsonNet.PrivateSettersContractResolvers;
 using Microsoft.Extensions.DependencyInjection;

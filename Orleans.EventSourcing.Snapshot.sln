@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleSample.Client", "samp
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{B4C223F9-19FE-4DD0-B53D-4FC90D6137B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orleans.EventSourcing.Snapshot.Tests", "Orleans.EventSourcing.Snapshot.Tests\Orleans.EventSourcing.Snapshot.Tests.csproj", "{E7EF6911-4C1E-4971-BFE4-9C3B4DD9B3AC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orleans.EventSourcing.Snapshot.Tests", "test\Orleans.EventSourcing.Snapshot.Tests\Orleans.EventSourcing.Snapshot.Tests.csproj", "{E7EF6911-4C1E-4971-BFE4-9C3B4DD9B3AC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

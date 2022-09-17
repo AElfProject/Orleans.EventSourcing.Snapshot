@@ -29,11 +29,11 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\src\Orleans.EventSourcing.Snapshot\Orleans.EventSourcing.Snapshot.csproj" />
+      <Orleans_CodeGenInputs Remove="Grains\SimpleGrain.cs" />
     </ItemGroup>
 
     <ItemGroup>
-      <Orleans_CodeGenInputs Remove="Grains\SimpleGrain.cs" />
+      <ProjectReference Include="..\..\src\Orleans.EventSourcing.Snapshot\Orleans.EventSourcing.Snapshot.csproj" />
     </ItemGroup>
 
 </Project>
