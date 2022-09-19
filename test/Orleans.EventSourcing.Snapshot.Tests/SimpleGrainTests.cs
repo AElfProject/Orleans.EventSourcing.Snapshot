@@ -40,10 +40,10 @@ public class SimpleGrainTests
         sum.ShouldBe(26);
 
         int snapshotSum = await grain.GetSnapshotSum();
-        snapshotSum.ShouldBe(9);
+        snapshotSum.ShouldBe(20);
 
         int snapshotTotalSum = await grain.GetSnapshotTotalSum();
-        snapshotTotalSum.ShouldBe(9);
+        snapshotTotalSum.ShouldBe(20);
 
         await grain.PushNumber(2);
         await grain.PushNumber(17);
@@ -54,9 +54,9 @@ public class SimpleGrainTests
         sum2.ShouldBe(59);
 
         int snapshotSum2 = await grain.GetSnapshotSum();
-        snapshotSum2.ShouldBe(28);
+        snapshotSum2.ShouldBe(45);
 
         int snapshotTotalSum2 = await grain.GetSnapshotTotalSum();
-        snapshotTotalSum2.ShouldBe(28);
+        snapshotTotalSum2.ShouldBe(45);
     }
 }

@@ -207,6 +207,8 @@ namespace Orleans.EventSourcing.Snapshot
             {
                 try
                 {
+                    UpdateConfirmedView(updates.Select(u => u.Entry));
+                    
                     if (_needSnapshot)
                     {
                         _snapshotState.StateAndMetaData.SnapshotVersion = _confirmedVersionInternal;
@@ -220,8 +222,6 @@ namespace Orleans.EventSourcing.Snapshot
                     batchSuccessfullyWritten = true;
 
                     Services.Log(LogLevel.Debug, "write ({0} updates) success {1}", updates.Length, _snapshotState);
-
-                    UpdateConfirmedView(updates.Select(u => u.Entry));
 
                     LastPrimaryIssue.Resolve(Host, Services);
                 }
