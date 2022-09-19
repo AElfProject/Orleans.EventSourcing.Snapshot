@@ -56,9 +56,9 @@ namespace Orleans.EventSourcing.Snapshot
             _needSnapshot = true;
         }
 
-        public async Task<SnapshotStateWithMetaData<TLogView, TLogEntry>> GetLastSnapshotMetaDataAsync()
+        public Task<SnapshotStateWithMetaData<TLogView, TLogEntry>> GetLastSnapshotMetaDataAsync()
         {
-            return _snapshotState.StateAndMetaData;
+            return Task.FromResult(_snapshotState.StateAndMetaData);
         }
 
         public override async Task<IReadOnlyList<TLogEntry>> RetrieveLogSegment(int fromVersion, int toVersion)
