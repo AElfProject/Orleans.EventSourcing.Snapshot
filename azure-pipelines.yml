@@ -1,51 +1,71 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
-trigger:
-  branches:
-    include:
-      - master
-  paths:
-    exclude:
-      - README.md
-      - nuget.config
-      - .gitignore    
-
-pool:
-  vmImage: 'ubuntu-latest'
-
-variables:
-  configuration: 'Release'
-  projectPath: src/Orleans.EventSourcing.Snapshot/Orleans.EventSourcing.Snapshot.csproj
-
-steps:
-  - task: UseDotNet@2
-    displayName: 'Install .NET Core SDK'
-    inputs:
-      packageType: 'sdk'
-      version: '3.x'
-
-  - task: DotNetCoreCLI@2
-    displayName: 'Build'
-    inputs:
-      command: 'build'
-      configuration: $(configuration)
-      projects: $(projectPath)
+jobs:
   
-  - task: DotNetCoreCLI@2
-    displayName: 'Pack'
-    inputs:
-      command: 'pack'
-      packagesToPack: $(projectPath)
-      nobuild: true
-      versioningScheme: 'off'
-
-  - task: PublishBuildArtifacts@1
-    displayName: 'Publish'
-    inputs:
-      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-      ArtifactName: 'drop'
-      publishLocation: 'Container'
-
+  # All tasks on Windows....
+  #- job: build_all_windows
+  #  displayName: Build all tasks (Windows)
+  #  pool:
+  #    vmImage: windows-latest
+  #  variables:
+  #    CI_TEST: true
+  #  steps:
+  #  - task: UseDotNet@2
+  #    displayName: 'Install .NET Core SDK'
+  #    inputs:
+  #      version: 3.1.102
+  #
+  #  - task: BatchScript@1
+  #    displayName: 'Download AElf build tools'
+  #    inputs:
+  #      filename: 'scripts/download_binary.bat'
+  #  - script: PowerShell.exe -file scripts/install.ps1 
+  #    displayName: 'Install protobuf'
+  #  - script: choco install unzip
+  #    displayName: 'Install unzip'
+  #  - powershell: Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+  #  - script: PowerShell.exe -file build.ps1 -target=Run-Unit-Tests
+  #    displayName: 'Build and Test'
+  # All tasks on Linux
+  - job: build_all_linux
+    displayName: Build all tasks (Linux)
+    timeoutInMinutes: 120
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+      - task: UseDotNet@2
+        displayName: 'Install .NET Core SDK'
+        inputs:
+          version: 6.0.x
+      - script: bash build.sh --target=Test-with-Codecov
+        displayName: 'Build and Test'
+      - task: PublishTestResults@2
+        condition: always()
+        inputs:
+          testRunner: VSTest
+          testResultsFiles: '**/*.trx'
+      - task: Palmmedia.reportgenerator.reportgenerator-build-release-task.reportgenerator@4
+        displayName: ReportGenerator
+        inputs:
+          reports: '$(Build.SourcesDirectory)/test/*/TestResults/*/coverage.cobertura.xml'
+          targetdir: '$(Build.SourcesDirectory)/CodeCoverage'
+          reporttypes: 'Cobertura'
+          assemblyfilters: '-xunit*'
+      - script: bash build.sh --target=Upload-Coverage-Azure
+        displayName: 'Upload data to Codecov'
+# All tasks on macOS
+#- job: build_all_darwin
+#  displayName: Build all tasks (macOS)
+#  pool:
+#    vmImage: macos-latest
+#  variables:
+#    CI_TEST: true
+#  steps:
+#  - task: UseDotNet@2
+#    displayName: 'Install .NET Core SDK'
+#    inputs:
+#      version: 3.1.102
+#  - script: bash scripts/download_binary.sh
+#    displayName: 'Download AElf build tools'
+#  - script: bash scripts/install.sh
+#    displayName: 'Install protobuf'
+#  - script: bash build.sh -target=Run-Unit-Tests
+#    displayName: 'Build and Test'
