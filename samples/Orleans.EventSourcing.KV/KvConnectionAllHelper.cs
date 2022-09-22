@@ -12,6 +12,7 @@ public class KvConnectionAllHelper :IKvConnection
     private  string KvConnectionSTR = "localhost:6379";
     private static object KvLock = new object();
     private  ConnectionMultiplexer _connection;
+    private LuaScript _preparedWriteScript;
 
     /*public KvConnectionAllHelper(IConfiguration configuration)
     {
