@@ -32,9 +32,9 @@ jobs:
       vmImage: ubuntu-latest
     steps:
       - task: UseDotNet@2
-          displayName: 'Install .NET Core SDK'
-          inputs:
-            version: 6.0.x
+        displayName: 'Install .NET Core SDK'
+        inputs:
+          version: 6.0.x
       - script: bash build.sh --target=Test-with-Codecov
         displayName: 'Build and Test'
       - task: PublishTestResults@2
