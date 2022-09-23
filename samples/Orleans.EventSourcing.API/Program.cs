@@ -13,7 +13,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 //builder.Services.AddTransient<IKvConnection, KvConnectionListHelper>();
-builder.Services.AddTransient<IKvConnection, KvConnectionAllHelper>();
+//builder.Services.AddTransient<IKvConnection, KvConnectionAllHelper>();
+builder.Services.AddTransient<IKvConnection, KvConnectionPartitionHelper>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
