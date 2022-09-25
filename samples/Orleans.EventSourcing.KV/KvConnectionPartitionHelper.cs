@@ -89,7 +89,7 @@ public class KvConnectionPartitionHelper:IKvConnection
     
     
 
-    public async Task<bool> AppendToStreamAsync(string stream, long expectedVersion, IEnumerable<EventData> events)
+    public async Task<bool> AppendToStreamAsync(string stream, long expectedVersion, IEnumerable<object> events)
     {
         int eventCount = events.Count();
         var tempversion = expectedVersion+1 - eventCount;

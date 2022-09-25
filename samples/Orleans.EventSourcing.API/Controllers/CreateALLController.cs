@@ -14,9 +14,7 @@ public class CreateAllController : ControllerBase
 {
     private readonly KvConnectionAllHelper _helper=new KvConnectionAllHelper();
     private readonly IKvConnection _kvConnection;
-    private readonly EventData data = new EventData( Guid.NewGuid(),"ee",true,null,null);
-
-    private  List<EventData> eventDatas = new List<EventData>();
+   
     private  List<string> eventDatass = new List<string>(){"w","s","z"};
     private readonly ILogger<EventController> _logger;
     public CreateAllController(IKvConnection kvConnection, ILogger<EventController> logger)

@@ -7,8 +7,8 @@ namespace Orleans.EventSourcing.KV;
 
 public class KvConnectionListHelper:IKvConnection
 {
-    //private  string KvConnectionSTR = APIConfHelper.AppSettings["KvConnectionSTR"].ToString();
-    private string KvConnectionSTR = "localhost:6379";
+   
+    private string KvConnectionSTR = "localhost:6666" ;
     private static object KvLock = new object();
     private static ConnectionMultiplexer _connection;
  
@@ -33,38 +33,32 @@ public class KvConnectionListHelper:IKvConnection
         }  //end get
     }
  
- 
     public  IDatabase GetRedisDatabase()
     {
         return Instance.GetDatabase();
     }
-
-
-    
     
     public async Task<List<EventData>> ReadStreamEventsForwardAsync(string stream, long start, int count)
     {
 
         var result= await GetRedisDatabase().ListRangeAsync(stream, start, count+start-1);
-        //var result2=  GetRedisDatabase().ListRange(stream, start, -1);
         List<EventData> list = new List<EventData>();
-        foreach (var redisValue in result)
-        {
-            EventData eventData = JsonConvert.DeserializeObject<EventData>(redisValue);
-            list.Add(eventData);
-        }
-
+       
         return list;
       
     }
-    
-    public async Task<bool> AppendToStreamAsync(string stream, long expectedVersion, IEnumerable<EventData> events)
+
+   
+
+    public async Task<bool> AppendToStreamAsync(string stream, long expectedVersion, IEnumerable<object> events)
     {
         var count= await GetRedisDatabase().ListRightPushAsync(stream,
             events.Select(e => new RedisValue(JsonConvert.SerializeObject(e))).ToArray());
 
         return count > 0 ;
     }
+
+
 
     public async Task<List<EventData>> ReadStreamEventsBackwardAsync(string stream, long start, int count)
     {

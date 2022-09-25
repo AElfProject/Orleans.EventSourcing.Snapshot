@@ -51,14 +51,8 @@ public class KvConnectionListHelper:IKvConnection
     {
 
         var result= await GetRedisDatabase().ListRangeAsync(stream, start, count+start-1);
-        //var result2=  GetRedisDatabase().ListRange(stream, start, -1);
         List<EventData> list = new List<EventData>();
-        /*foreach (var redisValue in result)
-        {
-            EventData eventData = JsonConvert.DeserializeObject<EventData>(redisValue);
-            list.Add(eventData);
-        }*/
-
+       
         return list;
       
     }

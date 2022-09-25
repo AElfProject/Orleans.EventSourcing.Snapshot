@@ -13,7 +13,7 @@ public interface IKvConnection
     Task<bool> AppendToStreamAsync(
         string stream,
         long expectedVersion,
-        IEnumerable<EventData> events);
+        IEnumerable<object> events);
 
     Task<List<EventData>> ReadStreamEventsBackwardAsync(
         string stream,

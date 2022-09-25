@@ -62,7 +62,7 @@ public class KvConnectionAllHelper :IKvConnection
         return list;
     }
 
-    public async Task<bool> AppendToStreamAsync(string stream, long expectedVersion, IEnumerable<EventData> events)
+    public async Task<bool> AppendToStreamAsync(string stream, long expectedVersion, IEnumerable<object> events)
     {
         int eventCount = events.Count();
         var tempversion = expectedVersion - eventCount+1;
