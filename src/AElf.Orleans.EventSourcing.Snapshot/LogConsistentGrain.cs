@@ -4,19 +4,19 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
+using Orleans;
 using Orleans.Core;
 using Orleans.Runtime;
 using Orleans.Storage;
-using Orleans.GrainDirectory;
 using Orleans.LogConsistency;
 using Orleans.Providers;
 using Orleans.MultiCluster;
 
-namespace Orleans.EventSourcing.Snapshot;
+namespace AElf.Orleans.EventSourcing.Snapshot;
 
 /// <summary>
 /// Base class for all grains that use log-consistency for managing  the state.
-/// It is the equivalent of <see cref="Grain{T}"/> for grains using log-consistency.
+/// It is the equivalent of <see cref="Grain"/> for grains using log-consistency.
 /// (SiloAssemblyLoader uses it to extract type)
 /// </summary>
 /// <typeparam name="TView">The type of the view</typeparam>

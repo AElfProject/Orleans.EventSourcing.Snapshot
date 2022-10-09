@@ -6,8 +6,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Orleans;
 
-namespace Orleans.EventSourcing.Snapshot;
+namespace AElf.Orleans.EventSourcing.Snapshot;
 
 internal class ClientOptionsLogger : OptionsLogger, ILifecycleParticipant<IClusterClientLifecycle>
 {

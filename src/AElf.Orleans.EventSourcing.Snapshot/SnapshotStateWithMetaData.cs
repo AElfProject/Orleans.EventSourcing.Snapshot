@@ -1,8 +1,9 @@
 ﻿using Orleans.EventSourcing.Common;
 using System;
 using System.Collections.Generic;
+using Orleans;
 
-namespace Orleans.EventSourcing.Snapshot
+namespace AElf.Orleans.EventSourcing.Snapshot
 {
     [Serializable]
     public class SnapshotStateWithMetaDataAndETag<TState, TEntry> : IGrainState

@@ -1,6 +1,6 @@
 using System;
 using Microsoft.Extensions.DependencyInjection;
-using Orleans.EventSourcing.Snapshot.Hosting;
+using AElf.Orleans.EventSourcing.Snapshot.Hosting;
 using Orleans.Hosting;
 using Orleans.TestingHost;
 

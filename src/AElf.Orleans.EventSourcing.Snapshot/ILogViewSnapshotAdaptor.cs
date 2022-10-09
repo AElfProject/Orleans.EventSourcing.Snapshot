@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Orleans.LogConsistency;
 
-namespace Orleans.EventSourcing.Snapshot;
+namespace AElf.Orleans.EventSourcing.Snapshot;
 
 public interface ILogViewSnapshotAdaptor<TView, TLogEntry> : ILogViewAdaptor<TView, TLogEntry>,
     ILogViewSnapshot<TView, TLogEntry>

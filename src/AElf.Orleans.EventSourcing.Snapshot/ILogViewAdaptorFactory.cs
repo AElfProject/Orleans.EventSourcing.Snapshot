@@ -1,7 +1,7 @@
 using Orleans.LogConsistency;
 using Orleans.Storage;
 
-namespace Orleans.EventSourcing.Snapshot;
+namespace AElf.Orleans.EventSourcing.Snapshot;
 
 /// <summary>
 /// Interface to be implemented for a log-view adaptor factory

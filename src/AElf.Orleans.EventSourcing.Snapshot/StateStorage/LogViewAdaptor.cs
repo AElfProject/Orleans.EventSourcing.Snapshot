@@ -10,7 +10,7 @@ using Orleans.EventSourcing.Common;
 using Orleans.EventSourcing.StateStorage;
 using Orleans.LogConsistency;
 
-namespace Orleans.EventSourcing.Snapshot.StateStorage;
+namespace AElf.Orleans.EventSourcing.Snapshot.StateStorage;
 
 /// <summary>
     /// A log view adaptor that wraps around a traditional storage adaptor, and uses batching and e-tags

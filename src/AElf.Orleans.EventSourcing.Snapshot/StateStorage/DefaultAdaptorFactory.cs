@@ -1,9 +1,8 @@
 using Orleans.Storage;
-using Orleans.EventSourcing.Snapshot;
 using Orleans.LogConsistency;
 
 
-namespace Orleans.EventSourcing.Snapshot.StateStorage;
+namespace AElf.Orleans.EventSourcing.Snapshot.StateStorage;
 
 internal class DefaultAdaptorFactory : ILogViewAdaptorFactory
 {

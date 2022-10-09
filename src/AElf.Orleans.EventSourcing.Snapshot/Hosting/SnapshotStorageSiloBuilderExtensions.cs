@@ -2,12 +2,11 @@
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Orleans.Configuration;
 using Orleans.Hosting;
-using Orleans.LogConsistency;
 using Orleans.Providers;
 using Orleans.Runtime;
 using System;
 
-namespace Orleans.EventSourcing.Snapshot.Hosting
+namespace AElf.Orleans.EventSourcing.Snapshot.Hosting
 {
     public static class SnapshotStorageSiloBuilderExtensions
     {

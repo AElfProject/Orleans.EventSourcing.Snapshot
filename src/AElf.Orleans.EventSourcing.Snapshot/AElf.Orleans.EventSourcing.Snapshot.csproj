@@ -2,13 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <AssemblyName>Orleans.EventSourcing.Snapshot</AssemblyName>
-    <RootNamespace>Orleans.EventSourcing.Snapshot</RootNamespace>
-    <Version>1.0.2</Version>
+    <AssemblyName>AElf.Orleans.EventSourcing.Snapshot</AssemblyName>
+    <RootNamespace>AElf.Orleans.EventSourcing.Snapshot</RootNamespace>
+    <Version>1.0.3</Version>
     <Product />
     <Description>Snapshot storage provider for orleans event sourcing</Description>
-    <PackageProjectUrl>https://github.com/AElfProject/Orleans.EventSourcing.Snapshot</PackageProjectUrl>
-    <PackageId>Orleans.EventSourcing.Snapshot</PackageId>
+    <PackageProjectUrl>https://github.com/AElfProject/AElf.Orleans.EventSourcing.Snapshot</PackageProjectUrl>
+    <PackageId>AElf.Orleans.EventSourcing.Snapshot</PackageId>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 

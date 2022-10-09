@@ -1,4 +1,3 @@
-using Orleans.Concurrency;
 using Orleans.MultiCluster;
 
 using System;
@@ -7,10 +6,9 @@ using System.Threading.Tasks;
 using Orleans.Core;
 using Orleans.Runtime;
 using Orleans.Storage;
-using Orleans.EventSourcing;
 using Orleans.LogConsistency;
 
-namespace Orleans.EventSourcing.Snapshot;
+namespace AElf.Orleans.EventSourcing.Snapshot;
 
 public abstract class JournaledSnapshotGrain<TGrainState> : JournaledSnapshotGrain<TGrainState, object>
     where TGrainState : class, new()

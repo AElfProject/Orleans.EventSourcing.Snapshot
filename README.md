@@ -1,11 +1,11 @@
-# Orleans.EventSourcing.Snapshot
+# AElf.Orleans.EventSourcing.Snapshot
 Snapshot storage provider for orleans event sourcing
 
 This provider stores grain state snapshots and the event sequence, using a standard storage provider that can be configured independently.
 
 ### Usage
 Install from nuget:
-`dotnet add package Orleans.EventSourcing.Snapshot`
+`dotnet add package AElf.Orleans.EventSourcing.Snapshot`
 
 Add this provider to SiloBuilder:
 

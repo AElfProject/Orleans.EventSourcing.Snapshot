@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Orleans.EventSourcing.Snapshot;
+using AElf.Orleans.EventSourcing.Snapshot;
 
 namespace Orleans.EventSourcing.Snapshot.Tests;
 

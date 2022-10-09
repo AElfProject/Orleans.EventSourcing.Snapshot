@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29409.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orleans.EventSourcing.Snapshot", "src\Orleans.EventSourcing.Snapshot\Orleans.EventSourcing.Snapshot.csproj", "{63B6E76F-5A25-4021-B816-41465C218E6C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AElf.Orleans.EventSourcing.Snapshot", "src\AElf.Orleans.EventSourcing.Snapshot\AElf.Orleans.EventSourcing.Snapshot.csproj", "{63B6E76F-5A25-4021-B816-41465C218E6C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{84F6FF66-BD59-43B7-83AE-2D90937C93ED}"
 EndProject

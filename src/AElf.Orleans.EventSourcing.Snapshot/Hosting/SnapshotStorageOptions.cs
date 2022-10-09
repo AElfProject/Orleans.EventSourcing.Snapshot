@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace Orleans.EventSourcing.Snapshot.Hosting
+namespace AElf.Orleans.EventSourcing.Snapshot.Hosting
 {
     public class SnapshotStorageOptions
     {

@@ -12,7 +12,7 @@
         <PackageReference Include="JsonNet.PrivateSettersContractResolvers" Version="1.0.0" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
         <PackageReference Include="coverlet.collector" Version="3.1.2" />
-        <PackageReference Include="coverlet.msbuild" Version="2.5.1"/>
+        <PackageReference Include="coverlet.msbuild" Version="2.5.1" />
         <PackageReference Include="Microsoft.Orleans.CodeGenerator.MSBuild" Version="3.6.5">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -33,7 +33,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\src\Orleans.EventSourcing.Snapshot\Orleans.EventSourcing.Snapshot.csproj" />
+      <ProjectReference Include="..\..\src\AElf.Orleans.EventSourcing.Snapshot\AElf.Orleans.EventSourcing.Snapshot.csproj" />
     </ItemGroup>
 
 </Project>

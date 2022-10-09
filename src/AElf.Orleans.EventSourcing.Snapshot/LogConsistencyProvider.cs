@@ -4,7 +4,7 @@ using Orleans.LogConsistency;
 using Orleans.Storage;
 using System;
 
-namespace Orleans.EventSourcing.Snapshot
+namespace AElf.Orleans.EventSourcing.Snapshot
 {
     public class LogConsistencyProvider : ILogViewAdaptorFactory
     {

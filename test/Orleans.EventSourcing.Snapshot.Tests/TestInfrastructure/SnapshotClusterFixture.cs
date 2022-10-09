@@ -1,8 +1,9 @@
 using System;
+using AElf.Orleans.EventSourcing.Snapshot;
 using EventStore.ClientAPI;
 using JsonNet.PrivateSettersContractResolvers;
 using Microsoft.Extensions.DependencyInjection;
-using Orleans.EventSourcing.Snapshot.Hosting;
+using AElf.Orleans.EventSourcing.Snapshot.Hosting;
 using Orleans.Hosting;
 using Orleans.Providers.MongoDB.Configuration;
 using Orleans.TestingHost;
