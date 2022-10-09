@@ -1,4 +1,4 @@
-﻿namespace Orleans.EventSourcing.Snapshot
+﻿namespace AElf.Orleans.EventSourcing.Snapshot
 {
     public class SnapshotStorageLogConsistencyOptions
     {

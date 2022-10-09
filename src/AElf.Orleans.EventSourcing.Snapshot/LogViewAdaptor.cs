@@ -9,9 +9,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Orleans.EventSourcing.Snapshot
+namespace AElf.Orleans.EventSourcing.Snapshot
 {
-    public class LogViewAdaptor<TLogView, TLogEntry> : PrimaryBasedLogViewAdaptor<TLogView, TLogEntry, SubmissionEntry<TLogEntry>>
+    public class LogViewAdaptor<TLogView, TLogEntry> : PrimaryBasedLogViewAdaptor<TLogView, TLogEntry, SubmissionEntry<TLogEntry>>,ILogViewSnapshotAdaptor<TLogView,TLogEntry>
         where TLogView : class, new()
         where TLogEntry : class
     {
@@ -19,7 +19,6 @@ namespace Orleans.EventSourcing.Snapshot
 
         private IGrainStorage _grainStorage;
         private string _grainTypeName;
-        private Func<SnapshotStrategyInfo, bool> _snapshotStrategy;
         private bool _useIndependentEventStorage;
         private IGrainEventStorage _eventStorage;
 
@@ -33,7 +32,6 @@ namespace Orleans.EventSourcing.Snapshot
             TLogView initialState,
             IGrainStorage grainStorage,
             string grainTypeName,
-            Func<SnapshotStrategyInfo, bool> snapshotStrategy,
             ILogConsistencyProtocolServices services,
             bool useIndependentEventStorage,
             IGrainEventStorage eventStorage)
@@ -41,7 +39,6 @@ namespace Orleans.EventSourcing.Snapshot
         {
             _grainStorage = grainStorage;
             _grainTypeName = grainTypeName;
-            _snapshotStrategy = snapshotStrategy;
             _useIndependentEventStorage = useIndependentEventStorage;
 
             if (useIndependentEventStorage)
@@ -50,6 +47,18 @@ namespace Orleans.EventSourcing.Snapshot
                     ?? throw new ArgumentNullException(nameof(eventStorage),
                         "Must set eventStorage when useIndependentEventStorage is true");
             }
+        }
+        
+        private bool _needSnapshot;
+
+        public void SetNeedSnapshotFlag()
+        {
+            _needSnapshot = true;
+        }
+
+        public Task<SnapshotStateWithMetaData<TLogView, TLogEntry>> GetLastSnapshotMetaDataAsync()
+        {
+            return Task.FromResult(_snapshotState.StateAndMetaData);
         }
 
         public override async Task<IReadOnlyList<TLogEntry>> RetrieveLogSegment(int fromVersion, int toVersion)
@@ -198,11 +207,14 @@ namespace Orleans.EventSourcing.Snapshot
             {
                 try
                 {
-                    if (_snapshotStrategy(GetSnapshotStrategyInfo()))
+                    UpdateConfirmedView(updates.Select(u => u.Entry));
+                    
+                    if (_needSnapshot)
                     {
                         _snapshotState.StateAndMetaData.SnapshotVersion = _confirmedVersionInternal;
                         _snapshotState.StateAndMetaData.SnapshotUpdatedTime = DateTime.Now;
                         _snapshotState.StateAndMetaData.Snapshot = _confirmedViewInternal.DeepClone();
+                        _needSnapshot = false;
                     }
 
                     await _grainStorage.WriteStateAsync(_grainTypeName, Services.GrainReference, _snapshotState);
@@ -210,8 +222,6 @@ namespace Orleans.EventSourcing.Snapshot
                     batchSuccessfullyWritten = true;
 
                     Services.Log(LogLevel.Debug, "write ({0} updates) success {1}", updates.Length, _snapshotState);
-
-                    UpdateConfirmedView(updates.Select(u => u.Entry));
 
                     LastPrimaryIssue.Resolve(Host, Services);
                 }
@@ -430,15 +440,6 @@ namespace Orleans.EventSourcing.Snapshot
             }
         }
 
-        private SnapshotStrategyInfo GetSnapshotStrategyInfo()
-        {
-            return new SnapshotStrategyInfo
-            {
-                CurrentConfirmedVersion = _confirmedVersionInternal,
-                SnapshotVersion = _snapshotState.StateAndMetaData.SnapshotVersion,
-                SnapshotUpdatedTime = _snapshotState.StateAndMetaData.SnapshotUpdatedTime
-            };
-        }
 
 #if DEBUG
         private bool operation_in_progress;

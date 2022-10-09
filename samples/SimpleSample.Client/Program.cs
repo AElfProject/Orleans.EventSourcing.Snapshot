@@ -14,7 +14,8 @@ namespace SimpleSample.Client
         {
             var clusterClient = await BuildOrleansClient();
 
-            var personId = Guid.Empty;
+            //var personId = Guid.Empty;
+            var personId = Guid.ParseExact("669911FF-8888-D000-B44D-00C04FB964FF","D");
             var person = clusterClient.GetGrain<IPersonGrain>(personId);
 
             Console.WriteLine("Please input your nickname: ");
@@ -34,6 +35,12 @@ namespace SimpleSample.Client
                 Console.WriteLine("Your history saids: ");
                 Console.WriteLine(string.Join(Environment.NewLine, historySaids));
                 Console.WriteLine("--------------------");
+
+                var snapshotList = await person.GetLastSnapshotSaids();
+                Console.WriteLine("Snapshot List:");
+                Console.WriteLine(string.Join(Environment.NewLine, snapshotList));
+                int globalVersion = await person.GetLastSnapshotGlobalVersion();
+                Console.WriteLine("Global Version:" + globalVersion);
                 Console.WriteLine();
             }
         }

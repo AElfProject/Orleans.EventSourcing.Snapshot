@@ -1,8 +1,9 @@
 ﻿using Orleans.EventSourcing.Common;
 using System;
 using System.Collections.Generic;
+using Orleans;
 
-namespace Orleans.EventSourcing.Snapshot
+namespace AElf.Orleans.EventSourcing.Snapshot
 {
     [Serializable]
     public class SnapshotStateWithMetaDataAndETag<TState, TEntry> : IGrainState
@@ -12,7 +13,7 @@ namespace Orleans.EventSourcing.Snapshot
         public SnapshotStateWithMetaData<TState, TEntry> StateAndMetaData { get; set; }
 
         public string ETag { get; set; }
-		
+
         public bool RecordExists
         {
             get => StateAndMetaData.GlobalVersion > 0;

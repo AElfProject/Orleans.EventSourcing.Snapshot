@@ -1,40 +1,38 @@
-﻿using EventStore.ClientAPI;
+using System;
+using AElf.Orleans.EventSourcing.Snapshot;
+using EventStore.ClientAPI;
 using JsonNet.PrivateSettersContractResolvers;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Orleans;
-using AElf.Orleans.EventSourcing.Snapshot;
 using AElf.Orleans.EventSourcing.Snapshot.Hosting;
 using Orleans.Hosting;
 using Orleans.Providers.MongoDB.Configuration;
-using SimpleSample.Grains;
-using System;
-using System.Threading.Tasks;
+using Orleans.TestingHost;
 
-namespace SimpleSample.Silo
+namespace Orleans.EventSourcing.Snapshot.Tests;
+
+public class SnapshotClusterFixture: IDisposable
 {
-    public class Program
+    public SnapshotClusterFixture()
     {
-        static async Task Main(string[] args)
-        {
-            var host = BuildSilo();
+        var builder = new TestClusterBuilder();
+        builder.AddSiloBuilderConfigurator<TestSiloConfigurations>();
+        this.Cluster = builder.Build();
+        this.Cluster.Deploy();
+    }
+    
+    public TestCluster Cluster { get; private set; }
+    
+    public void Dispose()
+    {
+        this.Cluster.StopAllSilos();
+    }
 
-            await host.StartAsync();
-            Console.WriteLine("SimpleSample silo started");
-
-            Console.ReadLine();
-        }
-
-        private static ISiloHost BuildSilo()
-        {
-            var builder = new SiloHostBuilder()
-                .UseLocalhostClustering()
-                .ConfigureApplicationParts(parts => parts.AddApplicationPart(typeof(PersonGrain).Assembly).WithReferences())
-                .ConfigureLogging(logging =>
-                {
-                    logging.SetMinimumLevel(LogLevel.Debug).AddConsole();
-                })
-                .UseMongoDBClient("mongodb://localhost:27017")
+    private class TestSiloConfigurations : ISiloBuilderConfigurator {
+        public void Configure(ISiloHostBuilder hostBuilder) {
+            hostBuilder.ConfigureServices(services => { 
+                    services.AddSingleton<ICalculateGrain, CalculateGrain>();
+                services.AddSingleton<INumberGrain, NumberGrain>();
+            }).UseMongoDBClient("mongodb://localhost:27017")
                 .AddMongoDBGrainStorageAsDefault((MongoDBGrainStorageOptions op) =>
                 {
                     op.CollectionPrefix = "GrainStorage";
@@ -59,8 +57,6 @@ namespace SimpleSample.Silo
                         services.AddSingleton<IGrainEventStorage, EventStoreGrainEventStorage>();
                     };
                 });
-
-            return builder.Build();
         }
     }
 }

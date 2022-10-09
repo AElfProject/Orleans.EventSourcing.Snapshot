@@ -2,16 +2,23 @@
 using SimpleSample.GrainInterfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AElf.Orleans.EventSourcing.Snapshot;
 
 namespace SimpleSample.Grains
 {
-    public class PersonGrain : JournaledGrain<PersonState>, IPersonGrain
+    public class PersonGrain : JournaledSnapshotGrain<PersonState>, IPersonGrain
     {
-        public Task Say(string content)
+        public async Task Say(string content)
         {
-            RaiseEvent(new PersonSaidEvent { Said = content });
-
-            return Task.CompletedTask;
+            bool needSnapshot = false;
+            if (content.Contains("5"))
+            {
+                needSnapshot = true;
+            }
+            
+            RaiseEvent(new PersonSaidEvent { Said = content },needSnapshot);
+            await ConfirmEvents();
+            return;
         }
 
         public Task<List<string>> GetHistorySaids()
@@ -19,16 +26,30 @@ namespace SimpleSample.Grains
             return Task.FromResult(TentativeState.HistorySaids);
         }
 
-        public Task UpdateNickName(string newNickName)
+        public async Task UpdateNickName(string newNickName)
         {
-            RaiseEvent(new PersonNickNameUpdatedEvent { NewNickName = newNickName });
-
-            return Task.CompletedTask;
+            RaiseEvent(new PersonNickNameUpdatedEvent { NewNickName = newNickName },true);
+            await ConfirmEvents();
+            return;
         }
 
         public Task<string> GetNickName()
         {
             return Task.FromResult(TentativeState.NickName);
+        }
+
+        public async Task<List<string>> GetLastSnapshotSaids()
+        {
+            SnapshotStateWithMetaData<PersonState,object> metaData = await GetLastSnapshotMetaData();
+
+            return metaData.Snapshot.HistorySaids;
+        }
+
+        public async Task<int> GetLastSnapshotGlobalVersion()
+        {
+            SnapshotStateWithMetaData<PersonState, object> metaData = await GetLastSnapshotMetaData();
+
+            return metaData.GlobalVersion;
         }
     }
 

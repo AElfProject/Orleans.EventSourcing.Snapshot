@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <AssemblyName>AElf.Orleans.EventSourcing.Snapshot</AssemblyName>
+    <RootNamespace>AElf.Orleans.EventSourcing.Snapshot</RootNamespace>
+    <Version>1.0.3</Version>
+    <Product />
+    <Description>Snapshot storage provider for orleans event sourcing</Description>
+    <PackageProjectUrl>https://github.com/AElfProject/AElf.Orleans.EventSourcing.Snapshot</PackageProjectUrl>
+    <PackageId>AElf.Orleans.EventSourcing.Snapshot</PackageId>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DeepCloner" Version="0.10.2" />
+    <PackageReference Include="Microsoft.Orleans.EventSourcing" Version="3.6.5" />
+  </ItemGroup>
+
+</Project>

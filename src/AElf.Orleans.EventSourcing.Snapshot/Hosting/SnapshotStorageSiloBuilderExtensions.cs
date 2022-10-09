@@ -2,12 +2,11 @@
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Orleans.Configuration;
 using Orleans.Hosting;
-using Orleans.LogConsistency;
 using Orleans.Providers;
 using Orleans.Runtime;
 using System;
 
-namespace Orleans.EventSourcing.Snapshot.Hosting
+namespace AElf.Orleans.EventSourcing.Snapshot.Hosting
 {
     public static class SnapshotStorageSiloBuilderExtensions
     {
@@ -64,7 +63,7 @@ namespace Orleans.EventSourcing.Snapshot.Hosting
             }
 
             services
-                .AddSingletonNamedService(name, (sp, n) => LogConsistencyProviderFactory.Create(sp, n, options.SnapshotStrategy))
+                .AddSingletonNamedService(name, (sp, n) => LogConsistencyProviderFactory.Create(sp, n))
                 .TryAddSingleton(sp => sp.GetServiceByName<ILogViewAdaptorFactory>(ProviderConstants.DEFAULT_STORAGE_PROVIDER_NAME));
 
             return services;

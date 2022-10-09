@@ -4,27 +4,24 @@ using Orleans.LogConsistency;
 using Orleans.Storage;
 using System;
 
-namespace Orleans.EventSourcing.Snapshot
+namespace AElf.Orleans.EventSourcing.Snapshot
 {
     public class LogConsistencyProvider : ILogViewAdaptorFactory
     {
         private SnapshotStorageLogConsistencyOptions _options;
-        private Func<SnapshotStrategyInfo, bool> _snapshotStrategy; 
         private IGrainEventStorage _eventStorage;
 
         public bool UsesStorageProvider => true;
 
         public LogConsistencyProvider(
             SnapshotStorageLogConsistencyOptions options, 
-            IGrainEventStorage eventStorage,
-            Func<SnapshotStrategyInfo, bool> snapshotStrategy) 
+            IGrainEventStorage eventStorage) 
         {
             _options = options;
             _eventStorage = eventStorage;
-            _snapshotStrategy = snapshotStrategy;
         }
 
-        public ILogViewAdaptor<TLogView, TLogEntry> MakeLogViewAdaptor<TLogView, TLogEntry>(
+        public ILogViewSnapshotAdaptor<TLogView, TLogEntry> MakeLogViewAdaptor<TLogView, TLogEntry>(
             ILogViewAdaptorHost<TLogView, TLogEntry> hostGrain, 
             TLogView initialState, 
             string grainTypeName, 
@@ -38,7 +35,6 @@ namespace Orleans.EventSourcing.Snapshot
                 initialState, 
                 grainStorage,
                 grainTypeName,
-                _snapshotStrategy,
                 services, 
                 _options.UseIndependentEventStorage, 
                 _eventStorage);
@@ -47,7 +43,7 @@ namespace Orleans.EventSourcing.Snapshot
 
     public static class LogConsistencyProviderFactory
     {
-        public static ILogViewAdaptorFactory Create(IServiceProvider services, string name, Func<SnapshotStrategyInfo, bool> snapshotStrategy)
+        public static ILogViewAdaptorFactory Create(IServiceProvider services, string name)
         {
             var optionsMonitor = services.GetRequiredService<IOptionsMonitor<SnapshotStorageLogConsistencyOptions>>();
             var options = optionsMonitor.Get(name);
@@ -56,7 +52,7 @@ namespace Orleans.EventSourcing.Snapshot
                 ? services.GetRequiredService<IGrainEventStorage>()
                 : new NullGrainEventStorage();
 
-            return ActivatorUtilities.CreateInstance<LogConsistencyProvider>(services, options, eventStorage, snapshotStrategy);
+            return ActivatorUtilities.CreateInstance<LogConsistencyProvider>(services, options, eventStorage);
         }
     }
 }

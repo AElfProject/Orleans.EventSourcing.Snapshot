@@ -1,4 +1,4 @@
-﻿using EventStore.ClientAPI;
+using EventStore.ClientAPI;
 using JsonNet.PrivateSettersContractResolvers;
 using Newtonsoft.Json;
 using AElf.Orleans.EventSourcing.Snapshot;
@@ -9,9 +9,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SimpleSample.Silo
-{
-    public class EventStoreGrainEventStorage : IGrainEventStorage
+namespace Orleans.EventSourcing.Snapshot.Tests;
+
+public class EventStoreGrainEventStorage : IGrainEventStorage
     {
         private static readonly JsonSerializerSettings _jsonDefaultSettings = new JsonSerializerSettings
         {
@@ -157,4 +157,3 @@ namespace SimpleSample.Silo
     {
         public string ClrTypeName { get; set; }
     }
-}

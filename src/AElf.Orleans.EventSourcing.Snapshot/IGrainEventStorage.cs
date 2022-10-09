@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Orleans.EventSourcing.Snapshot
+namespace AElf.Orleans.EventSourcing.Snapshot
 {
     public interface IGrainEventStorage
     {

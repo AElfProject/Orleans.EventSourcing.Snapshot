@@ -14,5 +14,9 @@ namespace SimpleSample.GrainInterfaces
         Task UpdateNickName(string newNickName);
 
         Task<string> GetNickName();
+
+        Task<List<string>> GetLastSnapshotSaids();
+
+        Task<int> GetLastSnapshotGlobalVersion();
     }
 }
